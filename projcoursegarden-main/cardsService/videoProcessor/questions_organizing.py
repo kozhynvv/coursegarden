@@ -1,27 +1,28 @@
 
 
-
+# Creating 2 dicts.
+# First dict includes {question:answer_options}, second dict includes {question:correct_answer_num}
+# This way we can request variables from the dicts by key-question that is the same for both dicts
 def organize_questions(text):
     text = text.split(';\n\n') # splitting whole text on blocks
-    main_list = []
-    for i in text:
-        temp_list = []
+    quest_options = {} # Dict 1 that includes {question:answer_options}
+    quest_answer = {} # Dict 2 that includes {question:correct_answer_num}
+    for _ in text:
         #defining question
-        question = i.split('\n')[0]
-        temp_list.append(question) # adding question to the temporary list
+        question = _.split('\n')[0]
 
         # defining answers
-        start = i.find('(') + 1
-        end = i.rfind(')')
-        answers = i[start:end]
+        start = _.find('(') + 1
+        end = _.rfind(')')
+        answers = _[start:end]
         answers = answers.split('; ')
-        temp_list.append(answers) # adding answers to the temporary list
+
+        quest_options[question] = answers # add {question:answer_options} to the dict 1
 
         # defining the right answer
-        ans_start = i.find('Correct answer ') + 15
-        corr_ans = i[ans_start]
-        temp_list.append(corr_ans) # adding answer to the temporary list
+        ans_start = _.find('Correct answer ') + 15
+        corr_ans = _[ans_start]
 
-        main_list.append(temp_list) # adding temporary sublist to the main list
+        quest_answer[question] = corr_ans # add {question:correct_answer_num} to the dict 2
 
-    return main_list # main list looks like [[question, possible answers, correct answer number], [...], ...]
+    return quest_options, quest_answer # return both dicts
